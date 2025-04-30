@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, TextField, Container, Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom'; // Para navegación
-import './Login.css'; // Asegúrate de que el archivo CSS esté correctamente importado
-import Logo from '../img/Innovar Proyectos - Logo.png';
+import '../LOGIN/Login.css'; // Asegúrate de que el archivo CSS esté correctamente importado
+import Logo from '../../img/Innovar Proyectos - Logo.png'; // Asegúrate de que la ruta sea correcta
 
 // Componente para el login
 function Login() {

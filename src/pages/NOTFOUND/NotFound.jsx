@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Box, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom'; // Para redirigir al usuario
-import './NotFound.css'; // Asegúrate de tener el archivo CSS en la carpeta correcta
+import '../NOTFOUND/NotFound.css'; // Asegúrate de tener el archivo CSS en la carpeta correcta
 
 
 function NotFound() {
