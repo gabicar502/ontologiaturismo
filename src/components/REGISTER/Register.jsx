@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, TextField, Button, Typography, Box, MenuItem } from "@mui/material";
-import './Register.css'; // Asegúrate de tener este archivo CSS en la misma carpeta
+import '../REGISTER/Register.css'; // Asegúrate de tener este archivo CSS en la misma carpeta
 
 export default function Register() {
   // Estado para capturar los datos

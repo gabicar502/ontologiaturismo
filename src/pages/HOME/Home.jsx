@@ -2,13 +2,13 @@ import React from 'react';
 import { Container, Box, Typography, Button, Grid, Card, CardContent } from '@mui/material';
 import Slider from 'react-slick'; // Asegúrate de que esta importación sea correcta
 import { Link } from 'react-router-dom'; // Para redirigir al usuario
-import Logo from '../img/Innovar Proyectos - Logo.png'; // Asegúrate de que la ruta sea correcta
-import './Home.css'; // Asegúrate de tener tu archivo CSS
+import Logo from '../../img/Innovar Proyectos - Logo.png'; // Asegúrate de que la ruta sea correcta
+import '../HOME/Home.css'; // Asegúrate de tener tu archivo CSS
 
 // Importa las imágenes del carrusel
-import orquideas_banner from '../img/banner_ia-carrusel1.png';
-import banner_robotica from '../img/banner_robotica-carrusel2.png';
-import banner_preguntale_ciencia from '../img/banner_preguntale_ciencia-carrusel3.png';
+import orquideas_banner from '../../img/IMG_CARRUSEL/banner_ia-carrusel1.png';
+import banner_robotica from '../../img/IMG_CARRUSEL/banner_robotica-carrusel2.png';
+import banner_preguntale_ciencia from '../../img/IMG_CARRUSEL/banner_preguntale_ciencia-carrusel3.png';
 
 // Configuración del slider
 const sliderSettings = {
