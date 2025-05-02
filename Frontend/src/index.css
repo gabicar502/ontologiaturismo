@@ -1,0 +1,10 @@
+/* index.css */
+@import "../node_modules/slick-carousel/slick/slick.css";
+@import "../node_modules/slick-carousel/slick/slick-theme.css";
+
+/* index.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
