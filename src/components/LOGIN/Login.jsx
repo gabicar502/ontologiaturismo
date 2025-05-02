@@ -23,7 +23,7 @@ function Login() {
         src={Logo} 
         alt="Innovar Proyectos Logo" 
         className="logo" 
-        style={{ width: '200px' }} // Puedes aumentar el valor de width según sea necesario
+        style={{ width: '320px' }} // Puedes aumentar el valor de width según sea necesario
         />
        
         <Typography variant="h6" align="center" color="textSecondary">
