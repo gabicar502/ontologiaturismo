@@ -1,0 +1,14 @@
+/* Agrega estos estilos en tu archivo global de estilos (App.css o index.css) */
+
+
+/* src/App.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f9; /* Fondo suave para toda la página */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center; /* Centrado vertical */
+  height: 100vh; /* Asegura que ocupe toda la pantalla */
+}
