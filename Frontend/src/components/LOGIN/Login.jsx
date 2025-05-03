@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from '../../../config/firebase'; 
-import { Button, TextField, Container, Box, Typography } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { Button, TextField, Container, Box, Typography, Snackbar, Alert } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import '../LOGIN/Login.css';
 import Logo from '../../img/Innovar Proyectos - Logo.png';
 
@@ -11,33 +11,31 @@ const auth = getAuth(app);
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Inicializa useNavigate
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log("Login exitoso", user);
-
-      // Redirigir al panel de usuario después de un inicio de sesión exitoso
-      navigate('/panel'); // Asegúrate de que '/panel' sea la ruta correcta a tu panel
+      navigate('/panel');
     } catch (error) {
       console.error("Error al iniciar sesión:", error.message);
-      alert("Credenciales inválidas");
+      setOpenSnackbar(true);
     }
   };
 
   return (
     <Container maxWidth="xs">
-      <Box mt={5} p={3} boxShadow={3} borderRadius={2} bgcolor="#f5f5f5">
+      <Box className="login-box">
         <img
           src={Logo}
           alt="Innovar Proyectos Logo"
           className="logo"
-          style={{ width: '320px' }} 
         />
+
         <Typography variant="h6" align="center" color="textSecondary">
           Bienvenido a la Plataforma de Proyectos Escolares
         </Typography>
@@ -67,17 +65,34 @@ function Login() {
             color="primary"
             fullWidth
             type="submit"
-            sx={{ mt: 2 }}
+            className="login-button"
           >
             Iniciar Sesión
           </Button>
-          <Box mt={2} textAlign="center">
-            <Link to="/registro" style={{ textDecoration: 'none', color: 'blue' }}>
+          <Box className="register-link-box">
+            <Link to="/registro" className="register-link">
               ¿No tienes cuenta? Crear cuenta
             </Link>
           </Box>
         </form>
       </Box>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        className="snackbar"
+      >
+        <Alert
+          onClose={() => setOpenSnackbar(false)}
+          severity="error"
+          variant="filled"
+          className="alert"
+        >
+          Credenciales inválidas
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }
