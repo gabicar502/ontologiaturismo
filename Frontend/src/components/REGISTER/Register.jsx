@@ -37,7 +37,6 @@ export default function Register() {
 
       setSnackbar({ open: true, message: "Usuario creado con éxito", severity: "success" });
 
-      // Redirigir al login luego de un pequeño delay
       setTimeout(() => {
         navigate('/login');
       }, 2000);
@@ -48,38 +47,65 @@ export default function Register() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box mt={10} p={4} boxShadow={3} borderRadius={2} bgcolor="#f5f5f5">
-        <Typography variant="h4" gutterBottom align="center">
-          Crea tu cuenta
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <TextField label="Nombre" fullWidth margin="normal" value={name} onChange={(e) => setName(e.target.value)} />
-          <TextField label="Apellido" fullWidth margin="normal" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-          <TextField label="Correo electrónico" fullWidth margin="normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <TextField label="Contraseña" type="password" fullWidth margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <TextField
-            label="Rol"
-            select
-            fullWidth
-            margin="normal"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            {roles.map((rol) => (
-              <MenuItem key={rol} value={rol}>{rol}</MenuItem>
-            ))}
-          </TextField>
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-            Registrar
-          </Button>
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-            Cancelar
-          </Button>
-        </form>
-      </Box>
+    <div className="register-container">
+      <Container maxWidth="sm">
+        <Box className="register-box">
+          <Typography variant="h4" gutterBottom className="register-title">
+            Crea tu cuenta
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              className="register-input"
+              label="Nombre"
+              fullWidth
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <TextField
+              className="register-input"
+              label="Apellido"
+              fullWidth
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            <TextField
+              className="register-input"
+              label="Correo electrónico"
+              fullWidth
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              className="register-input"
+              label="Contraseña"
+              type="password"
+              fullWidth
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <TextField
+              className="register-input"
+              label="Rol"
+              select
+              fullWidth
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              {roles.map((rol) => (
+                <MenuItem key={rol} value={rol}>{rol}</MenuItem>
+              ))}
+            </TextField>
+            <Button type="submit" variant="contained" color="primary" fullWidth className="register-button">
+              REGISTRAR
+            </Button>
+            <Button onClick={() => navigate('/login')} variant="outlined" color="primary" fullWidth className="register-button">
+              CANCELAR
+            </Button>
+          </form>
+        </Box>
+      </Container>
 
-      {/* Snackbar de éxito o error */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={4000}
@@ -95,6 +121,6 @@ export default function Register() {
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </Container>
+    </div>
   );
 }
