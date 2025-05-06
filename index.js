@@ -30,8 +30,9 @@ const swaggerSpec = swaggerJsdoc({
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Usuarios
-app.post('/usuarios', async (req, res) => {
+
+// Usuarios (todas con POST)
+app.post('/usuarios/crear', async (req, res) => {
   const { nombre_usuario, correo, contraseña } = req.body;
   try {
     const nuevoUsuario = await usuarioService.crearUsuario(nombre_usuario, correo, contraseña);
@@ -41,7 +42,7 @@ app.post('/usuarios', async (req, res) => {
   }
 });
 
-app.get('/usuarios', async (req, res) => {
+app.post('/usuarios/listar', async (req, res) => {
   try {
     const usuarios = await usuarioService.listarUsuarios();
     res.json(usuarios);
@@ -49,6 +50,27 @@ app.get('/usuarios', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.post('/usuarios/actualizar', async (req, res) => {
+  const { id_usuario, nombre_usuario, correo, contraseña } = req.body;
+  try {
+    const actualizado = await usuarioService.actualizarUsuario(id_usuario, nombre_usuario, correo, contraseña);
+    res.json(actualizado);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/usuarios/eliminar', async (req, res) => {
+  const { id_usuario } = req.body;
+  try {
+    const eliminado = await usuarioService.eliminarUsuario(id_usuario);
+    res.json(eliminado);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 // Ontología
 app.get('/categorias', async (req, res) => {
