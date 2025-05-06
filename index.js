@@ -29,7 +29,16 @@ const swaggerSpec = swaggerJsdoc({
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Usuarios (todas con POST)
+/* -----------------------------------------
+   RUTAS DE USUARIO
+------------------------------------------ */
+
+// Informativa para evitar error GET
+app.get('/usuarios', (req, res) => {
+  res.send('✅ Usa POST en /usuarios/crear, /listar, /actualizar o /eliminar.');
+});
+
+// Crear usuario
 app.post('/usuarios/crear', async (req, res) => {
   const { nombre_usuario, correo, contraseña } = req.body;
   try {
@@ -40,6 +49,7 @@ app.post('/usuarios/crear', async (req, res) => {
   }
 });
 
+// Listar usuarios
 app.post('/usuarios/listar', async (req, res) => {
   try {
     const usuarios = await usuarioService.listarUsuarios();
@@ -49,6 +59,7 @@ app.post('/usuarios/listar', async (req, res) => {
   }
 });
 
+// Actualizar usuario
 app.post('/usuarios/actualizar', async (req, res) => {
   const { id_usuario, nombre_usuario, correo, contraseña } = req.body;
   try {
@@ -59,6 +70,7 @@ app.post('/usuarios/actualizar', async (req, res) => {
   }
 });
 
+// Eliminar usuario
 app.post('/usuarios/eliminar', async (req, res) => {
   const { id_usuario } = req.body;
   try {
@@ -69,7 +81,11 @@ app.post('/usuarios/eliminar', async (req, res) => {
   }
 });
 
-// Ontología
+/* -----------------------------------------
+   RUTAS DE ONTOLOGÍA
+------------------------------------------ */
+
+// Obtener categorías principales
 app.get('/categorias', async (req, res) => {
   try {
     const categorias = await _ontologiaService.consultarCategoriasPrincipales();
@@ -79,6 +95,7 @@ app.get('/categorias', async (req, res) => {
   }
 });
 
+// Ofertas destacadas
 app.get('/ofertas-destacadas', async (req, res) => {
   try {
     const ofertas = await _ontologiaService.consultarOfertasDestacadas();
@@ -88,7 +105,8 @@ app.get('/ofertas-destacadas', async (req, res) => {
   }
 });
 
-app.get('/subcategorias/categoria', async (req, res) => {
+// Subcategorías de una categoría
+app.get('/subcategorias/:categoria', async (req, res) => {
   try {
     const subcats = await _ontologiaService.consultarSubcategoriasDeCategoria(req.params.categoria);
     res.json(subcats);
@@ -97,7 +115,8 @@ app.get('/subcategorias/categoria', async (req, res) => {
   }
 });
 
-app.get('/instancias/categoria', async (req, res) => {
+// Instancias de una categoría
+app.get('/instancias/:categoria', async (req, res) => {
   try {
     const datos = await _ontologiaService.consultarInstanciasDeCategoria(req.params.categoria);
     res.json(datos);
@@ -106,6 +125,7 @@ app.get('/instancias/categoria', async (req, res) => {
   }
 });
 
+// Búsqueda
 app.get('/buscar', async (req, res) => {
   const { q, offset = 0 } = req.query;
   try {
@@ -121,4 +141,3 @@ app.get('/buscar', async (req, res) => {
 app.listen(port, () => {
   console.log(`✅ Servidor corriendo en http://localhost:${port}`);
 });
-
