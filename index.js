@@ -3,9 +3,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import OntologiaService from './api/ontologiaservice.js';
-
-
-//import UsuarioService from '../usuarios/UsuarioService.js';
+import UsuarioService from './api/usuarioservice.js';
 
 
 const app = express();
@@ -13,7 +11,7 @@ const port = 3001||80;
 app.use(cors());
 app.use(express.json());
 
-//const usuarioService = new UsuarioService();
+const usuarioService = new UsuarioService();
 const _ontologiaService = new OntologiaService(); // ✅ Correcto
 
 // Swagger configuración
