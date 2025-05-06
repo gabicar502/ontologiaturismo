@@ -5,14 +5,13 @@ import swaggerJsdoc from 'swagger-jsdoc';
 import OntologiaService from './api/ontologiaservice.js';
 import UsuarioService from './api/usuarioservice.js';
 
-
 const app = express();
-const port = 3001||80;
+const port = 3001 || 80;
 app.use(cors());
 app.use(express.json());
 
 const usuarioService = new UsuarioService();
-const _ontologiaService = new OntologiaService(); // ✅ Correcto
+const _ontologiaService = new OntologiaService();
 
 // Swagger configuración
 const swaggerSpec = swaggerJsdoc({
@@ -29,7 +28,6 @@ const swaggerSpec = swaggerJsdoc({
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 
 // Usuarios (todas con POST)
 app.post('/usuarios/crear', async (req, res) => {
@@ -70,7 +68,6 @@ app.post('/usuarios/eliminar', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 // Ontología
 app.get('/categorias', async (req, res) => {
@@ -120,10 +117,8 @@ app.get('/buscar', async (req, res) => {
   }
 });
 
-
 // Iniciar el servidor
 app.listen(port, () => {
-    console.log(`✅ Servidor corriendo en http://localhost:${port}`);
+  console.log(`✅ Servidor corriendo en http://localhost:${port}`);
 });
-
 
