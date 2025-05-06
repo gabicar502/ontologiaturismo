@@ -88,7 +88,7 @@ app.get('/ofertas-destacadas', async (req, res) => {
   }
 });
 
-app.get('/subcategorias/:categoria', async (req, res) => {
+app.get('/subcategorias-categoria', async (req, res) => {
   try {
     const subcats = await _ontologiaService.consultarSubcategoriasDeCategoria(req.params.categoria);
     res.json(subcats);
@@ -97,7 +97,7 @@ app.get('/subcategorias/:categoria', async (req, res) => {
   }
 });
 
-app.get('/instancias/:categoria', async (req, res) => {
+app.get('/instancias-categoria', async (req, res) => {
   try {
     const datos = await _ontologiaService.consultarInstanciasDeCategoria(req.params.categoria);
     res.json(datos);
