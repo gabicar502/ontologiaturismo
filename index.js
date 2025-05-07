@@ -178,6 +178,144 @@ app.post('/usuarios/eliminar', async (req, res) => {
   }
 });
 
+// --------------------------- RUTAS ONTOLOGÍA ---------------------------
+
+/**
+ * @swagger
+ * /categorias:
+ *   get:
+ *     summary: Obtener las categorías principales de la ontología
+ *     tags: [Ontología]
+ *     responses:
+ *       200:
+ *         description: Lista de categorías principales
+ *       500:
+ *         description: Error del servidor
+ */
+app.get('/categorias', async (req, res) => {
+  try {
+    const categorias = await _ontologiaService.consultarCategoriasPrincipales();
+    res.json(categorias);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /ofertas-destacadas:
+ *   get:
+ *     summary: Consultar ofertas destacadas con valoración alta
+ *     tags: [Ontología]
+ *     responses:
+ *       200:
+ *         description: Lista de ofertas destacadas
+ *       500:
+ *         description: Error del servidor
+ */
+app.get('/ofertas-destacadas', async (req, res) => {
+  try {
+    const ofertas = await _ontologiaService.consultarOfertasDestacadas();
+    res.json(ofertas);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /subcategorias/{categoria}:
+ *   get:
+ *     summary: Consultar subcategorías de una categoría
+ *     tags: [Ontología]
+ *     parameters:
+ *       - in: path
+ *         name: categoria
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Nombre de la categoría
+ *     responses:
+ *       200:
+ *         description: Lista de subcategorías
+ *       500:
+ *         description: Error del servidor
+ */
+app.get('/subcategorias/:categoria', async (req, res) => {
+  try {
+    const subcats = await _ontologiaService.consultarSubcategoriasDeCategoria(req.params.categoria);
+    res.json(subcats);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /instancias/{categoria}:
+ *   get:
+ *     summary: Consultar instancias relacionadas a una categoría
+ *     tags: [Ontología]
+ *     parameters:
+ *       - in: path
+ *         name: categoria
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Nombre de la categoría
+ *     responses:
+ *       200:
+ *         description: Lista de instancias
+ *       500:
+ *         description: Error del servidor
+ */
+app.get('/instancias/:categoria', async (req, res) => {
+  try {
+    const datos = await _ontologiaService.consultarInstanciasDeCategoria(req.params.categoria);
+    res.json(datos);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /buscar:
+ *   get:
+ *     summary: Buscar instancias en la ontología por texto
+ *     tags: [Ontología]
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Término de búsqueda
+ *       - in: query
+ *         name: offset
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: Offset de resultados
+ *     responses:
+ *       200:
+ *         description: Lista de resultados
+ *       400:
+ *         description: Parámetro q requerido
+ *       500:
+ *         description: Error del servidor
+ */
+app.get('/buscar', async (req, res) => {
+  const { q, offset = 0 } = req.query;
+  try {
+    if (!q) return res.status(400).json({ error: 'Parámetro q requerido' });
+    const resultados = await _ontologiaService.buscarInstanciasPorTexto(q, offset);
+    res.json(resultados);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // --------------------------- INICIO SERVIDOR ---------------------------
 
 app.listen(port, () => {
