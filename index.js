@@ -33,19 +33,52 @@ const swaggerSpec = swaggerJsdoc({
     },
     servers: [{ url: 'http://localhost:3001' }],
   },
-  apis: ['./api/index.js'], // Ajustar si deseas usar comentarios Swagger
+  apis: ['./index.js'],
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // --------------------------- RUTAS USUARIOS ---------------------------
 
-/** Información de ruta */
+/**
+ * @swagger
+ * /usuarios:
+ *   get:
+ *     summary: Información general de la ruta de usuarios
+ *     tags: [Usuarios]
+ *     responses:
+ *       200:
+ *         description: Mensaje informativo
+ */
 app.get('/usuarios', (req, res) => {
   res.send('Usa POST en /usuarios/crear, /listar, /actualizar o /eliminar.');
 });
 
-/** Crear usuario */
+/**
+ * @swagger
+ * /usuarios/crear:
+ *   post:
+ *     summary: Crear un nuevo usuario
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre_usuario:
+ *                 type: string
+ *               correo:
+ *                 type: string
+ *               contraseña:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Usuario creado exitosamente
+ *       500:
+ *         description: Error del servidor
+ */
 app.post('/usuarios/crear', async (req, res) => {
   const { nombre_usuario, correo, contraseña } = req.body;
   try {
@@ -56,7 +89,18 @@ app.post('/usuarios/crear', async (req, res) => {
   }
 });
 
-/** Listar usuarios */
+/**
+ * @swagger
+ * /usuarios/listar:
+ *   post:
+ *     summary: Listar todos los usuarios
+ *     tags: [Usuarios]
+ *     responses:
+ *       200:
+ *         description: Lista de usuarios
+ *       500:
+ *         description: Error del servidor
+ */
 app.post('/usuarios/listar', async (req, res) => {
   try {
     const usuarios = await usuarioService.listarUsuarios();
@@ -66,7 +110,33 @@ app.post('/usuarios/listar', async (req, res) => {
   }
 });
 
-/** Actualizar usuario */
+/**
+ * @swagger
+ * /usuarios/actualizar:
+ *   post:
+ *     summary: Actualizar un usuario existente
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_usuario:
+ *                 type: integer
+ *               nombre_usuario:
+ *                 type: string
+ *               correo:
+ *                 type: string
+ *               contraseña:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado
+ *       500:
+ *         description: Error del servidor
+ */
 app.post('/usuarios/actualizar', async (req, res) => {
   const { id_usuario, nombre_usuario, correo, contraseña } = req.body;
   try {
@@ -77,66 +147,32 @@ app.post('/usuarios/actualizar', async (req, res) => {
   }
 });
 
-/** Eliminar usuario */
+/**
+ * @swagger
+ * /usuarios/eliminar:
+ *   post:
+ *     summary: Eliminar un usuario
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_usuario:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Usuario eliminado
+ *       500:
+ *         description: Error del servidor
+ */
 app.post('/usuarios/eliminar', async (req, res) => {
   const { id_usuario } = req.body;
   try {
     const eliminado = await usuarioService.eliminarUsuario(id_usuario);
     res.json(eliminado);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// --------------------------- RUTAS ONTOLOGÍA ---------------------------
-
-/** Obtener categorías principales */
-app.get('/categorias', async (req, res) => {
-  try {
-    const categorias = await _ontologiaService.consultarCategoriasPrincipales();
-    res.json(categorias);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/** Ofertas destacadas */
-app.get('/ofertas-destacadas', async (req, res) => {
-  try {
-    const ofertas = await _ontologiaService.consultarOfertasDestacadas();
-    res.json(ofertas);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/** Subcategorías por categoría */
-app.get('/subcategorias/:categoria', async (req, res) => {
-  try {
-    const subcats = await _ontologiaService.consultarSubcategoriasDeCategoria(req.params.categoria);
-    res.json(subcats);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/** Instancias por categoría */
-app.get('/instancias/:categoria', async (req, res) => {
-  try {
-    const datos = await _ontologiaService.consultarInstanciasDeCategoria(req.params.categoria);
-    res.json(datos);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/** Buscar instancias */
-app.get('/buscar', async (req, res) => {
-  const { q, offset = 0 } = req.query;
-  try {
-    if (!q) return res.status(400).json({ error: 'Parámetro q requerido' });
-    const resultados = await _ontologiaService.buscarInstanciasPorTexto(q, offset);
-    res.json(resultados);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -148,4 +184,3 @@ app.listen(port, () => {
   console.log(`✅ Servidor corriendo en http://localhost:${port}`);
   console.log('📚 Documentación Swagger disponible en http://localhost:3001/api-docs');
 });
-
