@@ -35,7 +35,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Informativa para evitar error GET
 app.get('/usuarios', (req, res) => {
-  res.send('✅ Usa POST en /usuarios/crear, /listar, /actualizar o /eliminar.');
+  res.send('Usa POST en /usuarios/crear, /listar, /actualizar o /eliminar.');
 });
 
 // Crear usuario
@@ -140,4 +140,5 @@ app.get('/buscar', async (req, res) => {
 // Iniciar el servidor
 app.listen(port, () => {
   console.log(`✅ Servidor corriendo en http://localhost:${port}`);
+  console.log('📚 Documentación Swagger disponible en http://localhost:3001/api-docs');
 });
