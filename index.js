@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Servidor Express para la API de Turismo.
+ * Incluye rutas para manejo de usuarios y consultas SPARQL a la ontología.
+ * Incluye documentación Swagger en /api-docs
+ */
+
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
@@ -6,10 +12,13 @@ import OntologiaService from './api/ontologiaservice.js';
 import UsuarioService from './api/usuarioservice.js';
 
 const app = express();
-const port = 3001 || 80;
+const port = 3001;
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
+// Servicios
 const usuarioService = new UsuarioService();
 const _ontologiaService = new OntologiaService();
 
@@ -22,23 +31,21 @@ const swaggerSpec = swaggerJsdoc({
       version: '1.0.0',
       description: 'API para gestionar usuarios y consultar la ontología de Turismo',
     },
-    servers: [{ url: '/' }]
+    servers: [{ url: 'http://localhost:3001' }],
   },
-  apis: ['./api/index.js'],
+  apis: ['./api/index.js'], // Ajustar si deseas usar comentarios Swagger
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-/* -----------------------------------------
-   RUTAS DE USUARIO
------------------------------------------- */
+// --------------------------- RUTAS USUARIOS ---------------------------
 
-// Informativa para evitar error GET
+/** Información de ruta */
 app.get('/usuarios', (req, res) => {
   res.send('Usa POST en /usuarios/crear, /listar, /actualizar o /eliminar.');
 });
 
-// Crear usuario
+/** Crear usuario */
 app.post('/usuarios/crear', async (req, res) => {
   const { nombre_usuario, correo, contraseña } = req.body;
   try {
@@ -49,7 +56,7 @@ app.post('/usuarios/crear', async (req, res) => {
   }
 });
 
-// Listar usuarios
+/** Listar usuarios */
 app.post('/usuarios/listar', async (req, res) => {
   try {
     const usuarios = await usuarioService.listarUsuarios();
@@ -59,7 +66,7 @@ app.post('/usuarios/listar', async (req, res) => {
   }
 });
 
-// Actualizar usuario
+/** Actualizar usuario */
 app.post('/usuarios/actualizar', async (req, res) => {
   const { id_usuario, nombre_usuario, correo, contraseña } = req.body;
   try {
@@ -70,7 +77,7 @@ app.post('/usuarios/actualizar', async (req, res) => {
   }
 });
 
-// Eliminar usuario
+/** Eliminar usuario */
 app.post('/usuarios/eliminar', async (req, res) => {
   const { id_usuario } = req.body;
   try {
@@ -81,11 +88,9 @@ app.post('/usuarios/eliminar', async (req, res) => {
   }
 });
 
-/* -----------------------------------------
-   RUTAS DE ONTOLOGÍA
------------------------------------------- */
+// --------------------------- RUTAS ONTOLOGÍA ---------------------------
 
-// Obtener categorías principales
+/** Obtener categorías principales */
 app.get('/categorias', async (req, res) => {
   try {
     const categorias = await _ontologiaService.consultarCategoriasPrincipales();
@@ -95,7 +100,7 @@ app.get('/categorias', async (req, res) => {
   }
 });
 
-// Ofertas destacadas
+/** Ofertas destacadas */
 app.get('/ofertas-destacadas', async (req, res) => {
   try {
     const ofertas = await _ontologiaService.consultarOfertasDestacadas();
@@ -105,7 +110,7 @@ app.get('/ofertas-destacadas', async (req, res) => {
   }
 });
 
-// Subcategorías de una categoría
+/** Subcategorías por categoría */
 app.get('/subcategorias/:categoria', async (req, res) => {
   try {
     const subcats = await _ontologiaService.consultarSubcategoriasDeCategoria(req.params.categoria);
@@ -115,7 +120,7 @@ app.get('/subcategorias/:categoria', async (req, res) => {
   }
 });
 
-// Instancias de una categoría
+/** Instancias por categoría */
 app.get('/instancias/:categoria', async (req, res) => {
   try {
     const datos = await _ontologiaService.consultarInstanciasDeCategoria(req.params.categoria);
@@ -125,7 +130,7 @@ app.get('/instancias/:categoria', async (req, res) => {
   }
 });
 
-// Búsqueda
+/** Buscar instancias */
 app.get('/buscar', async (req, res) => {
   const { q, offset = 0 } = req.query;
   try {
@@ -137,8 +142,10 @@ app.get('/buscar', async (req, res) => {
   }
 });
 
-// Iniciar el servidor
+// --------------------------- INICIO SERVIDOR ---------------------------
+
 app.listen(port, () => {
   console.log(`✅ Servidor corriendo en http://localhost:${port}`);
   console.log('📚 Documentación Swagger disponible en http://localhost:3001/api-docs');
 });
+
