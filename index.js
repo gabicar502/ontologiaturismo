@@ -192,7 +192,7 @@ app.post('/usuarios/eliminar', async (req, res) => {
  *             properties:
  *               correo:
  *                 type: string
- *                 description: Correo electrónico del usuario
+ *                 description: Correo del usuario
  *               contraseña:
  *                 type: string
  *                 description: Contraseña del usuario
@@ -204,8 +204,6 @@ app.post('/usuarios/eliminar', async (req, res) => {
  *       500:
  *         description: Error del servidor
  */
-
-
 app.post('/usuarios/login', async (req, res) => {
   const { correo, contraseña } = req.body;
   try {
