@@ -177,6 +177,44 @@ app.post('/usuarios/eliminar', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+/**
+ * @swagger
+ * /usuarios/login:
+ *   post:
+ *     summary: Iniciar sesión con correo y contraseña
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               correo:
+ *                 type: string
+ *               contraseña:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Sesión iniciada correctamente
+ *       401:
+ *         description: Credenciales inválidas
+ *       500:
+ *         description: Error del servidor
+ */
+app.post('/usuarios/login', async (req, res) => {
+  const { correo, contraseña } = req.body;
+  try {
+    const usuario = await usuarioService.iniciarSesion(correo, contraseña);
+    if (usuario) {
+      res.status(200).json(usuario);
+    } else {
+      res.status(401).json({ error: 'Credenciales inválidas' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // --------------------------- RUTAS ONTOLOGÍA ---------------------------
 
