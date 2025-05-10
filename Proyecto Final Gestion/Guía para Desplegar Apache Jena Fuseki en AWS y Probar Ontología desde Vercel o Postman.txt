@@ -1,0 +1,16 @@
+Primer paso: entrar al aws 
+segundo paso: Iniciar la maquina virtual
+Tercer paso: Poner los siguientes comandos; cd fuseki
+./fuseki-server --update --mem /turismo
+Cuarto paso: entrar al apache jena con el siguiente enlace: http://18.117.72.131:3030/#/
+Quinto paso: Se carga la ontología en el apache (Oferta.ttl) 
+Sexto paso: Abrir Vercel para rectificar o probar con Postman
+ 
+Pasos para iniciar aws bd
+paso 1: entrar al aws
+paso 2: Iniciar la maquina virtual
+paso 3: poner los siguientes comando: 
+sudo systemctl start postgresql
+sudo -u postgres psql
+
+y ya
