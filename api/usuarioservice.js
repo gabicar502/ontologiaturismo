@@ -65,26 +65,26 @@ class UsuarioService {
     }
   }
 
-  // Método para iniciar sesión
-  async iniciarSesion(correo, contraseña) {
-    try {
-      const result = await this.pool.query(
-        'SELECT * FROM usuarios WHERE correo = $1 AND contraseña = $2',
-        [correo, contraseña]
-      );
-      
-      if (result.rows.length > 0) {
-        // Usuario encontrado
-        return result.rows[0];
-      } else {
-        // No se encontró un usuario con esas credenciales
-        return null;
-      }
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-      throw error;
+ async iniciarSesion(correo, contraseña) {
+  try {
+    console.log('Intentando login con:', correo, contraseña); // 👈 NUEVO
+
+    const result = await this.pool.query(
+      'SELECT * FROM usuarios WHERE correo = $1 AND contraseña = $2',
+      [correo, contraseña]
+    );
+
+    if (result.rows.length > 0) {
+      return result.rows[0];
+    } else {
+      return null;
     }
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    throw error;
   }
+}
+
 }
 
 export default UsuarioService;

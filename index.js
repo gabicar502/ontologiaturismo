@@ -192,8 +192,10 @@ app.post('/usuarios/eliminar', async (req, res) => {
  *             properties:
  *               correo:
  *                 type: string
+ *                 description: Correo electrónico del usuario
  *               contraseña:
  *                 type: string
+ *                 description: Contraseña del usuario
  *     responses:
  *       200:
  *         description: Sesión iniciada correctamente
@@ -202,12 +204,12 @@ app.post('/usuarios/eliminar', async (req, res) => {
  *       500:
  *         description: Error del servidor
  */
+
 app.post('/usuarios/login', async (req, res) => {
   const { correo, contraseña } = req.body;
   try {
     const usuario = await usuarioService.iniciarSesion(correo, contraseña);
     if (usuario) {
-      // Extraer solo lo necesario
       const { id_usuario, nombre_usuario, correo } = usuario;
       res.status(200).json({ id_usuario, nombre_usuario, correo });
     } else {
@@ -217,6 +219,7 @@ app.post('/usuarios/login', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 // --------------------------- RUTAS ONTOLOGÍA ---------------------------
 
 /**
