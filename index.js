@@ -359,7 +359,7 @@ app.get('/buscar', async (req, res) => {
 
 // --------------------------- INICIO SERVIDOR ---------------------------
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`✅ Servidor corriendo en http://localhost:${port}`);
   console.log('📚 Documentación Swagger disponible en http://localhost:3001/api-docs');
 });
