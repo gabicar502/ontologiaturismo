@@ -5,13 +5,14 @@ class UsuarioService {
     constructor() {
       this.pool = new Pool({
         user: 'verceluser',               // o postgres, según creaste el usuario
-        host: '3.144.116.190',            // ← IP pública de tu instancia EC2
+        host: '3.148.113.89',            // ← IP pública de tu instancia EC2
         database: 'turismo',              // ← Tu base de datos real
         password: 'vercel123',            // ← La contraseña que diste
         port: 5432,
       });
-}
+    }
 
+  // Método para crear un usuario
   async crearUsuario(nombre_usuario, correo, contraseña) {
     try {
       const result = await this.pool.query(
@@ -25,6 +26,7 @@ class UsuarioService {
     }
   }
 
+  // Método para listar los usuarios
   async listarUsuarios() {
     try {
       const result = await this.pool.query('SELECT * FROM usuarios');
@@ -35,6 +37,7 @@ class UsuarioService {
     }
   }
 
+  // Método para actualizar un usuario
   async actualizarUsuario(id, nombre_usuario, correo, contraseña) {
     try {
       const result = await this.pool.query(
@@ -48,6 +51,7 @@ class UsuarioService {
     }
   }
 
+  // Método para eliminar un usuario
   async eliminarUsuario(id) {
     try {
       const result = await this.pool.query(
@@ -57,6 +61,27 @@ class UsuarioService {
       return result.rows[0];
     } catch (error) {
       console.error('Error al eliminar usuario:', error);
+      throw error;
+    }
+  }
+
+  // Método para iniciar sesión
+  async iniciarSesion(correo, contraseña) {
+    try {
+      const result = await this.pool.query(
+        'SELECT * FROM usuarios WHERE correo = $1 AND contraseña = $2',
+        [correo, contraseña]
+      );
+      
+      if (result.rows.length > 0) {
+        // Usuario encontrado
+        return result.rows[0];
+      } else {
+        // No se encontró un usuario con esas credenciales
+        return null;
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
       throw error;
     }
   }
