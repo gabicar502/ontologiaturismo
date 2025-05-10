@@ -207,7 +207,9 @@ app.post('/usuarios/login', async (req, res) => {
   try {
     const usuario = await usuarioService.iniciarSesion(correo, contraseña);
     if (usuario) {
-      res.status(200).json(usuario);
+      // Extraer solo lo necesario
+      const { id_usuario, nombre_usuario, correo } = usuario;
+      res.status(200).json({ id_usuario, nombre_usuario, correo });
     } else {
       res.status(401).json({ error: 'Credenciales inválidas' });
     }
@@ -215,7 +217,6 @@ app.post('/usuarios/login', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 // --------------------------- RUTAS ONTOLOGÍA ---------------------------
 
 /**
