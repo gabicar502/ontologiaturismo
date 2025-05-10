@@ -205,6 +205,7 @@ app.post('/usuarios/eliminar', async (req, res) => {
  *         description: Error del servidor
  */
 
+
 app.post('/usuarios/login', async (req, res) => {
   const { correo, contraseña } = req.body;
   try {
