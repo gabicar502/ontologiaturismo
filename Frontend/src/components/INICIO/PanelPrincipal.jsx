@@ -131,7 +131,7 @@ function PanelPrincipal() {
             </ListItem>
             <ListItem button onClick={() => toggleSubmenu('crearProyecto')}>
               <ListItemIcon><AddBoxIcon /></ListItemIcon>
-              <ListItemText primary="Proyectos" />
+              <ListItemText primary="Proyectoss" />
               {submenu.crearProyecto ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={submenu.crearProyecto} timeout="auto" unmountOnExit>
