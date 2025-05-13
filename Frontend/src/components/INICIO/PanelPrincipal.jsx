@@ -131,13 +131,13 @@ function PanelPrincipal() {
             </ListItem>
             <ListItem button onClick={() => toggleSubmenu('crearProyecto')}>
               <ListItemIcon><AddBoxIcon /></ListItemIcon>
-              <ListItemText primary="Proyectos" />
+              <ListItemText primary="Proyectoss" />
               {submenu.crearProyecto ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={submenu.crearProyecto} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 <ListItem button onClick={() => navigate('/panel/nuevo-proyecto')} sx={{ pl: 4 }}>
-                  <ListItemText primary="Nuevo Proyecto" />
+                  <ListItemText primary="Nuevo Proyectos" />
                 </ListItem>
                 <ListItem button sx={{ pl: 4 }}><ListItemText primary="Hilos o Avances" /></ListItem>
               </List>
