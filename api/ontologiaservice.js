@@ -4,7 +4,8 @@ import axios from 'axios';
 class OntologiaService {
   constructor() {
     // ✅ URL de consulta SPARQL (sin el "#/dataset/..."), esto es muy importante
-    this.fusekiUrl = 'http://3.143.255.198/turismo/sparql';
+   this.fusekiUrl = 'http://3.143.255.198:3030/turismo/sparql';
+
 
   }
 
