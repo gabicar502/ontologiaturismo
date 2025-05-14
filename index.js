@@ -1,18 +1,20 @@
 /**
  * @fileoverview Servidor Express para la API de Turismo.
  * Incluye rutas para manejo de usuarios y consultas SPARQL a la ontología.
- * Incluye documentación Swagger en /api-docs
+ * Documentación Swagger disponible en /api-docs
  */
 
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import OntologiaService from './api/ontologiaservice.js';
 import UsuarioService from './api/usuarioservice.js';
 
 const app = express();
-const port = 3001;
 
 // Middleware
 app.use(cors());
@@ -21,6 +23,10 @@ app.use(express.json());
 // Servicios
 const usuarioService = new UsuarioService();
 const _ontologiaService = new OntologiaService();
+
+// Obtener ruta absoluta del archivo para Swagger
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Swagger configuración
 const swaggerSpec = swaggerJsdoc({
@@ -31,12 +37,15 @@ const swaggerSpec = swaggerJsdoc({
       version: '1.0.0',
       description: 'API para gestionar usuarios y consultar la ontología de Turismo',
     },
-    servers: [{ url: 'https://ontologiaturismo.vercel.app' }], // Cambia al dominio de producción
+    servers: [
+      { url: 'https://ontologiaturismo.vercel.app' },
+      { url: 'http://localhost:3001' }
+    ],
   },
-  apis: ['./index.js'], // Aquí defines dónde están las rutas con comentarios @swagger
+  apis: [path.join(__dirname, 'index.js')],
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 
 // --------------------------- RUTAS USUARIOS ---------------------------
 
@@ -177,6 +186,7 @@ app.post('/usuarios/eliminar', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 /**
  * @swagger
  * /usuarios/login:
@@ -192,10 +202,8 @@ app.post('/usuarios/eliminar', async (req, res) => {
  *             properties:
  *               correo:
  *                 type: string
- *                 description: Correo del usuario
  *               contraseña:
  *                 type: string
- *                 description: Contraseña del usuario
  *     responses:
  *       200:
  *         description: Sesión iniciada correctamente
@@ -331,24 +339,21 @@ app.get('/instancias/:categoria', async (req, res) => {
  *         schema:
  *           type: string
  *         required: false
- *         description: Término de búsqueda
  *       - in: query
  *         name: offset
  *         schema:
  *           type: integer
  *         required: false
- *         description: Número de resultados a omitir
  *       - in: query
  *         name: category
  *         schema:
  *           type: string
  *         required: false
- *         description: Categoría en la que buscar (subclase de OFERTA)
  *     responses:
  *       200:
- *         description: Lista de resultados encontrados
+ *         description: Lista de resultados
  *       500:
- *         description: Error interno del servidor
+ *         description: Error del servidor
  */
 app.get('/buscar', async (req, res) => {
   const { q = '', offset = 0, category = '' } = req.query;
@@ -357,17 +362,9 @@ app.get('/buscar', async (req, res) => {
     const resultados = await _ontologiaService.buscarInstanciasPorTexto(q, offset, category);
     res.json(resultados);
   } catch (err) {
-    console.error('Error en /buscar:', err);
     res.status(500).json({ error: err.message });
   }
 });
 
-
-
-
-// --------------------------- INICIO SERVIDOR ---------------------------
-
-app.listen(port, '0.0.0.0', () => {
-  console.log(`✅ Servidor corriendo en ${port}`);
-  console.log('📚 Documentación Swagger disponible en http://localhost:3001/api-docs');
-});
+// Exportar para Vercel
+export default app;
