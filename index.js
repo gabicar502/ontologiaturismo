@@ -31,9 +31,9 @@ const swaggerSpec = swaggerJsdoc({
       version: '1.0.0',
       description: 'API para gestionar usuarios y consultar la ontología de Turismo',
     },
-    servers: [{ url: 'http://localhost:3001' }],
+    servers: [{ url: 'https://ontologiaturismo.vercel.app' }], // Cambia al dominio de producción
   },
-  apis: ['./index.js'],
+  apis: ['./index.js'], // Aquí defines dónde están las rutas con comentarios @swagger
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
