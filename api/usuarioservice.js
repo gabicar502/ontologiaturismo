@@ -5,7 +5,7 @@ class UsuarioService {
     constructor() {
       this.pool = new Pool({
         user: 'verceluser',               // o postgres, según creaste el usuario
-        host: '18.216.225.133',            // ← IP pública de tu instancia EC2
+        host: '3.148.235.97',            // ← IP pública de tu instancia EC2
         database: 'turismo',              // ← Tu base de datos real
         password: 'vercel123',            // ← La contraseña que diste
         port: 5432,
