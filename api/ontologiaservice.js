@@ -111,36 +111,43 @@ class OntologiaService {
     return this.ejecutarConsulta(query);
   }
 
-  async buscarInstanciasPorTexto(queryData, offset = 0) {
-    const query = `
-      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-      PREFIX owl: <http://www.w3.org/2002/07/owl#>
-      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-      PREFIX : <http://www.semanticweb.org/germanlozano/oferta#>
+  async buscarInstanciasPorTexto(queryData = '', offset = 0, category = '') {
+  const categoryFilter = category
+    ? `?refType rdfs:subClassOf* OFERTA:${category} .`
+    : '';
 
-      SELECT ?nombre ?direccion 
-             (REPLACE(STR(?valoracion2), "^^<http://www.w3.org/2001/XMLSchema#double>", "") AS ?valoracion)
-             (STRAFTER(STR(?refType), "#") AS ?type)
-      WHERE {
-        ?x :direccion ?direccion .
-        ?x :nombre ?nombre .
-        ?x :valoracion ?valoracion2 .
-        ?x rdf:type ?refType .
-        FILTER (
-          ?refType != owl:NamedIndividual &&
-          (
-            regex(STR(?nombre), "${queryData}", "i") ||
-            regex(STR(?direccion), "${queryData}", "i") ||
-            regex(STR(?valoracion2), "${queryData}", "i") ||
-            regex(STR(?refType), "${queryData}", "i")
-          )
-        )
-      }
-      LIMIT 20 OFFSET ${offset}
-    `;
-    return this.ejecutarConsulta(query);
-  }
+  const query = `
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    PREFIX OFERTA: <http://www.semanticweb.org/germanlozano/oferta#>
+
+    SELECT 
+      ?nombre  
+      ?direccion 
+      (REPLACE(STR(?valoracion2), "^^<http://www.w3.org/2001/XMLSchema#double>", "") AS ?valoracion)
+      (STRAFTER(STR(?refType), "#") AS ?type) 
+    WHERE {
+      ${categoryFilter}
+      ?x rdf:type ?refType .
+      ?x OFERTA:nombre ?nombre .
+      ?x OFERTA:direccion ?direccion .
+      ?x OFERTA:valoracion ?valoracion2 .
+      FILTER (
+        regex(str(?nombre), "${queryData}", "i") ||
+        regex(str(?valoracion2), "${queryData}", "i") ||
+        regex(str(?direccion), "${queryData}", "i") ||
+        regex(str(?refType), "${queryData}", "i")
+      )
+    }
+    ORDER BY ?refType
+    LIMIT 20 OFFSET ${offset}
+  `;
+
+  return this.ejecutarConsulta(query);
+}
+
 }
 
 export default OntologiaService;

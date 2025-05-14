@@ -323,39 +323,45 @@ app.get('/instancias/:categoria', async (req, res) => {
  * @swagger
  * /buscar:
  *   get:
- *     summary: Buscar instancias en la ontología por texto
+ *     summary: Buscar instancias en la ontología (parámetros opcionales)
  *     tags: [Ontología]
  *     parameters:
  *       - in: query
  *         name: q
  *         schema:
  *           type: string
- *         required: true
+ *         required: false
  *         description: Término de búsqueda
  *       - in: query
  *         name: offset
  *         schema:
  *           type: integer
  *         required: false
- *         description: Offset de resultados
+ *         description: Número de resultados a omitir
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Categoría en la que buscar (subclase de OFERTA)
  *     responses:
  *       200:
- *         description: Lista de resultados
- *       400:
- *         description: Parámetro q requerido
+ *         description: Lista de resultados encontrados
  *       500:
- *         description: Error del servidor
+ *         description: Error interno del servidor
  */
 app.get('/buscar', async (req, res) => {
-  const { q, offset = 0 } = req.query;
+  const { q = '', offset = 0, category = '' } = req.query;
+
   try {
-    if (!q) return res.status(400).json({ error: 'Parámetro q requerido' });
-    const resultados = await _ontologiaService.buscarInstanciasPorTexto(q, offset);
+    const resultados = await _ontologiaService.buscarInstanciasPorTexto(q, offset, category);
     res.json(resultados);
   } catch (err) {
+    console.error('Error en /buscar:', err);
     res.status(500).json({ error: err.message });
   }
 });
+
 
 
 
