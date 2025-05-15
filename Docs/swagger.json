@@ -16,6 +16,201 @@
           }
         }
       }
+    },
+    "/usuarios/crear": {
+      "post": {
+        "summary": "Crear un nuevo usuario",
+        "tags": ["Usuarios"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre_usuario": { "type": "string" },
+                  "correo": { "type": "string" },
+                  "contraseña": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Usuario creado exitosamente" },
+          "500": { "description": "Error del servidor" }
+        }
+      }
+    },
+    "/usuarios/listar": {
+      "post": {
+        "summary": "Listar todos los usuarios",
+        "tags": ["Usuarios"],
+        "responses": {
+          "200": { "description": "Lista de usuarios" },
+          "500": { "description": "Error del servidor" }
+        }
+      }
+    },
+    "/usuarios/actualizar": {
+      "post": {
+        "summary": "Actualizar un usuario existente",
+        "tags": ["Usuarios"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id_usuario": { "type": "integer" },
+                  "nombre_usuario": { "type": "string" },
+                  "correo": { "type": "string" },
+                  "contraseña": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Usuario actualizado" },
+          "500": { "description": "Error del servidor" }
+        }
+      }
+    },
+    "/usuarios/eliminar": {
+      "post": {
+        "summary": "Eliminar un usuario",
+        "tags": ["Usuarios"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id_usuario": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Usuario eliminado" },
+          "500": { "description": "Error del servidor" }
+        }
+      }
+    },
+    "/usuarios/login": {
+      "post": {
+        "summary": "Iniciar sesión con correo y contraseña",
+        "tags": ["Usuarios"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "correo": { "type": "string" },
+                  "contraseña": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Sesión iniciada correctamente" },
+          "401": { "description": "Credenciales inválidas" },
+          "500": { "description": "Error del servidor" }
+        }
+      }
+    },
+    "/categorias": {
+      "get": {
+        "summary": "Obtener las categorías principales de la ontología",
+        "tags": ["Ontología"],
+        "responses": {
+          "200": { "description": "Lista de categorías principales" },
+          "500": { "description": "Error del servidor" }
+        }
+      }
+    },
+    "/ofertas-destacadas": {
+      "get": {
+        "summary": "Consultar ofertas destacadas con valoración alta",
+        "tags": ["Ontología"],
+        "responses": {
+          "200": { "description": "Lista de ofertas destacadas" },
+          "500": { "description": "Error del servidor" }
+        }
+      }
+    },
+    "/subcategorias/{categoria}": {
+      "get": {
+        "summary": "Consultar subcategorías de una categoría",
+        "tags": ["Ontología"],
+        "parameters": [
+          {
+            "name": "categoria",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de subcategorías" },
+          "500": { "description": "Error del servidor" }
+        }
+      }
+    },
+    "/instancias/{categoria}": {
+      "get": {
+        "summary": "Consultar instancias relacionadas a una categoría",
+        "tags": ["Ontología"],
+        "parameters": [
+          {
+            "name": "categoria",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de instancias" },
+          "500": { "description": "Error del servidor" }
+        }
+      }
+    },
+    "/buscar": {
+      "get": {
+        "summary": "Buscar instancias en la ontología (parámetros opcionales)",
+        "tags": ["Ontología"],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de resultados encontrados" },
+          "500": { "description": "Error interno del servidor" }
+        }
+      }
     }
   }
 }
