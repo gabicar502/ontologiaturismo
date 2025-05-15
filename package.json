@@ -1,11 +1,11 @@
 {
+  "type": "module",
   "name": "proyecto-nuevo",
   "version": "1.0.0",
-  "type": "module",
-  "description": "API de Turismo desplegada en Vercel con Express y Swagger",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.js"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
