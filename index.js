@@ -1,24 +1,18 @@
 /**
  * @fileoverview Servidor Express para la API de Turismo.
  * Incluye rutas para manejo de usuarios y consultas SPARQL a la ontología.
- * La documentación Swagger se sirve desde un archivo JSON en /Docs/swagger.json
+ * Incluye documentación Swagger en /api-docs
  */
 
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
+import swaggerJsdoc from 'swagger-jsdoc';
 import OntologiaService from './api/ontologiaservice.js';
 import UsuarioService from './api/usuarioservice.js';
 
 const app = express();
-
-// 🔁 Resolver rutas para cargar el JSON local de Swagger
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const port = 3001;
 
 // Middleware
 app.use(cors());
@@ -28,11 +22,24 @@ app.use(express.json());
 const usuarioService = new UsuarioService();
 const _ontologiaService = new OntologiaService();
 
-// ✅ Swagger: cargar documentación desde archivo JSON
-const swaggerDocument = JSON.parse(
+// Swagger configuración
+const swaggerSpec = swaggerJsdoc({
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Turismo API',
+      version: '1.0.0',
+      description: 'API para gestionar usuarios y consultar la ontología de Turismo',
+    },
+    servers: [{ url: 'https://ontologiaturismo.vercel.app' }], // Cambia al dominio de producción
+  },
+  const swaggerDocument = JSON.parse(
   fs.readFileSync(path.join(__dirname, 'Docs', 'swagger.json'), 'utf-8')
 );
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  apis: ['./index.js'], // Aquí defines dónde están las rutas con comentarios @swagger
+});
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // --------------------------- RUTAS USUARIOS ---------------------------
 
