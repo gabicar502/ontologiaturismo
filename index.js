@@ -10,9 +10,6 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import OntologiaService from './api/ontologiaservice.js';
 import UsuarioService from './api/usuarioservice.js';
-import swaggerDocument from './Docs/swagger.json' assert { type: 'json' };
-import swaggerDocument from './swagger.json' assert { type: 'json' };
-import swaggerUi from 'swagger-ui-express';
 
 const app = express();
 const port = 3001;
@@ -36,11 +33,10 @@ const swaggerSpec = swaggerJsdoc({
     },
     servers: [{ url: 'https://ontologiaturismo.vercel.app' }], // Cambia al dominio de producción
   },
-  
   apis: ['./index.js'], // Aquí defines dónde están las rutas con comentarios @swagger
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // --------------------------- RUTAS USUARIOS ---------------------------
 
@@ -371,14 +367,7 @@ app.get('/buscar', async (req, res) => {
 
 // --------------------------- INICIO SERVIDOR ---------------------------
 
-// ✅ INICIO SERVIDOR solo en desarrollo local
-if (process.env.NODE_ENV !== 'production') {
-  const port = 3001;
-  app.listen(port, '0.0.0.0', () => {
-    console.log(`✅ Servidor corriendo en http://localhost:${port}`);
-    console.log('📚 Swagger disponible en http://localhost:3001/api-docs');
-  });
-}
-
-// ✅ Para Vercel
-export default app;
+app.listen(port, '0.0.0.0', () => {
+  console.log(`✅ Servidor corriendo en ${port}`);
+  console.log('📚 Documentación Swagger disponible en http://localhost:3001/api-docs');
+});
