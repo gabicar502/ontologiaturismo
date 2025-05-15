@@ -4,13 +4,14 @@
  * Incluye documentación Swagger en /api-docs
  */
 
+
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import swaggerJsdoc from 'swagger-jsdoc';
-import OntologiaService from './api/ontologiaservice.js';
-import UsuarioService from './api/usuarioservice.js';
+import swaggerDocument from './Docs/swagger.json' assert { type: 'json' };
 
+import UsuarioService from './api/usuarioservice.js';
+import OntologiaService from './api/ontologiaservice.js';
 const app = express();
 const port = 3001;
 
@@ -37,7 +38,7 @@ const swaggerSpec = swaggerJsdoc({
   apis: ['./index.js'], // Aquí defines dónde están las rutas con comentarios @swagger
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // --------------------------- RUTAS USUARIOS ---------------------------
 
