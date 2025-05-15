@@ -33,9 +33,7 @@ const swaggerSpec = swaggerJsdoc({
     },
     servers: [{ url: 'https://ontologiaturismo.vercel.app' }], // Cambia al dominio de producción
   },
-  const swaggerDocument = JSON.parse(
-  fs.readFileSync(path.join(__dirname, 'Docs', 'swagger.json'), 'utf-8')
-);
+  
   apis: ['./index.js'], // Aquí defines dónde están las rutas con comentarios @swagger
 });
 
