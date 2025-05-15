@@ -367,7 +367,14 @@ app.get('/buscar', async (req, res) => {
 
 // --------------------------- INICIO SERVIDOR ---------------------------
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`✅ Servidor corriendo en ${port}`);
-  console.log('📚 Documentación Swagger disponible en http://localhost:3001/api-docs');
-});
+// ✅ INICIO SERVIDOR solo en desarrollo local
+if (process.env.NODE_ENV !== 'production') {
+  const port = 3001;
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`✅ Servidor corriendo en http://localhost:${port}`);
+    console.log('📚 Swagger disponible en http://localhost:3001/api-docs');
+  });
+}
+
+// ✅ Para Vercel
+export default app;
