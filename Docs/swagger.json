@@ -1,0 +1,21 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Turismo API",
+    "version": "1.0.0",
+    "description": "API para gestionar usuarios y consultar la ontología de Turismo"
+  },
+  "paths": {
+    "/usuarios": {
+      "get": {
+        "summary": "Información general de la ruta de usuarios",
+        "tags": ["Usuarios"],
+        "responses": {
+          "200": {
+            "description": "Mensaje informativo"
+          }
+        }
+      }
+    }
+  }
+}
