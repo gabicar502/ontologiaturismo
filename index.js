@@ -5,10 +5,10 @@
  */
 
 
+import fs from 'fs';
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './Docs/swagger.json' assert { type: 'json' };
 
 import UsuarioService from './api/usuarioservice.js';
 import OntologiaService from './api/ontologiaservice.js';
