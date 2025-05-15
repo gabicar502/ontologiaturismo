@@ -4,14 +4,16 @@
  * Incluye documentación Swagger en /api-docs
  */
 
-
-import fs from 'fs';
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-
-import UsuarioService from './api/usuarioservice.js';
+import swaggerJsdoc from 'swagger-jsdoc';
 import OntologiaService from './api/ontologiaservice.js';
+import UsuarioService from './api/usuarioservice.js';
+import swaggerDocument from './Docs/swagger.json' assert { type: 'json' };
+import swaggerDocument from './swagger.json' assert { type: 'json' };
+import swaggerUi from 'swagger-ui-express';
+
 const app = express();
 const port = 3001;
 
